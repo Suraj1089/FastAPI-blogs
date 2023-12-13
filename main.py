@@ -1,37 +1,38 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
+from fastapi.security import OAuth2PasswordBearer
+from sqladmin import Admin, ModelView
 
+from db.database import Base, engine
+from db.models.user import User
+from api.v1.endpoints import converter, user
 
-from sqlalchemy import Column, Integer, String, create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-Base = declarative_base()
-engine = create_engine("sqlite:///./app.db")
-
-class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True)
-    username = Column(String(255), unique=True)
-    email = Column(String(255), unique=True)
-
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-def get_db():
-    try:
-        db = SessionLocal()
-        yield db
-    finally:
-        db.close()
-
-
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-@app.get("/users/{user_id}")
-async def get_user(user_id: int, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.id == user_id).first()
-    if user:
-        return user
-    else:
-        return {"message": "User not found"}
+# register fastapi admin panel
+admin = Admin(app=app, engine=engine)
+
+
+class UserAdmin(ModelView, model=User):
+    column_list = [User.id, User.email, User.email]
+
+
+admin.add_view(UserAdmin)
+
+app.include_router(converter.router)
+app.include_router(user.router)
+
+
+@app.get("/")
+async def home():
+    return RedirectResponse('/docs')
+
+
+if __name__ == '__main__':
+    import uvicorn
+
+    uvicorn.run('main:app', host='localhost', port=8000, reload=True)
