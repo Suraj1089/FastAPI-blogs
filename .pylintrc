@@ -1,5 +1,7 @@
 [MASTER]
 
+ignore=alembic
+
 # Ignore specific errors globally
 disable=
     C0114,  # missing-module-docstring
