@@ -20,4 +20,4 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint --rcfile=.pylintrc --ignore=alembic/ $(git ls-files '*.py')
+        pylint --rcfile=.pylintrc --exclude=alembic $(git ls-files '*.py')
