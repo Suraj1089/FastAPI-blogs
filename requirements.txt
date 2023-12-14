@@ -7,10 +7,12 @@ email-validator==2.1.0.post1
 emails==0.6
 fastapi-mail==1.4.1
 fastapi~=0.104.1
+flake8==6.1.0
 passlib==1.7.4
 psycopg2-binary==2.9.9
 pydantic-settings==2.1.0
 pydantic==2.5.1
+pylint==3.0.3
 python-dotenv==1.0.0
 python-jose==3.3.0
 python-multipart==0.0.6
