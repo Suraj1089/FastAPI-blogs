@@ -5,6 +5,7 @@ Revises:
 Create Date: 2023-12-14 09:36:30.845885
 
 """
+# pylint: disable=wrong-import-order
 from typing import Sequence, Union
 
 from alembic import op
