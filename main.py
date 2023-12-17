@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
-from fastapi.security import OAuth2PasswordBearer
 from sqladmin import Admin, ModelView
 
 from api.v1.endpoints import converter, user, blog
@@ -8,14 +7,17 @@ from db.database import Base, engine
 from db.models.blog import Post, Comment
 from db.models.user import User, Author
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+app = FastAPI(
+    title="fastapi-tutorials",
+    description="fastapi-tutorials"
+)
+
 
 # register fastapi admin panel
-admin = Admin(app=app, engine=engine)
+admin: Admin = Admin(app=app, engine=engine)
 
 
 class UserAdmin(ModelView, model=User):
