@@ -28,5 +28,7 @@ ENV EMAILS_FROM_NAME=$EMAILS_FROM_NAME
 ENV EMAILS_FROM_EMAIL=$EMAILS_FROM_EMAIL
 ENV WEBSITE_DOMAIN=$WEBSITE_DOMAIN
 
+# Run Alembic migrations
+RUN alembic upgrade head
 
 CMD ["python", "./main.py"]

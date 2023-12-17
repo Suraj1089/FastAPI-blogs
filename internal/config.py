@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1
     PROJECT_NAME: str = 'fastapi-tutorials'
-    DROPBOX_ACCESS_TOKEN: str
+    DROPBOX_ACCESS_TOKEN: str = None
     DATABASE_URI: str = "postgresql://fastapi:fastapi@localhost:5433/test"  # use local database in development
     WEBSITE_DOMAIN: str = 'http://localhost:8000'
     SECRET_KEY: str
@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     SMTP_API_KEY: str
     EMAILS_FROM_NAME: str
     EMAILS_FROM_EMAIL: str
-    EMAIL_TEMPLATES_DIR: str
+    EMAIL_TEMPLATES_DIR: str = None
     model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8')
 
 
