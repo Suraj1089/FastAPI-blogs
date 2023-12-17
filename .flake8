@@ -1,5 +1,5 @@
 [flake8]
-
+exclude = versions
 ignore =
     # E121: continuation line under-indented for hanging indent.
     E121,
