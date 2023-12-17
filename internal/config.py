@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str
     EMAILS_ENABLED: bool = False
-    SMTP_HOST: str
+    SMTP_HOST: str = 587
     SMTP_PORT: int
     SMTP_LOGIN: str
     SMTP_PASSWORD: str

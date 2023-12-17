@@ -2,13 +2,18 @@
 FROM python:3.9.6-slim
 
 # set a directory for the app
-WORKDIR /usr/src/app
+WORKDIR /app
+
+# Copy only the requirements file to the container
+COPY requirements.txt .
+
+# install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
 
 # copy all the files to the container
 COPY . .
 
-# install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
 
 # define the port number the container should expose
 EXPOSE 8000
@@ -28,7 +33,5 @@ ENV EMAILS_FROM_NAME=$EMAILS_FROM_NAME
 ENV EMAILS_FROM_EMAIL=$EMAILS_FROM_EMAIL
 ENV WEBSITE_DOMAIN=$WEBSITE_DOMAIN
 
-# Run Alembic migrations
-RUN alembic upgrade head
 
-CMD ["python", "./main.py"]
+ENTRYPOINT ["/app/entrypoint.sh"]
