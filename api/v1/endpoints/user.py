@@ -14,11 +14,12 @@ from db.schemas.user import UserInDB, UserCreate, Token, UserOutDB, PasswordRese
 from internal.config import settings
 from utils.email_utils import send_email_otp, generate_otp, send_new_account_email, send_password_reset_email
 from utils.user import (
-    create_access_token,
+
     authenticate_user,
-    get_user_by_email,
-    get_password_hash,
+    create_access_token,
     create_user,
+    get_password_hash,
+    get_user_by_email,
     get_user_by_query
 )
 
@@ -107,7 +108,7 @@ async def reset_user_password(token: str, password: PasswordReset, db: Session =
 async def login_with_email_otp(email: EmailStr, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == email).first()
     if not user:
-        raise HTTPException(detail=f"User with email {email} not found", status_code=status.HTTP_401_UNAUTHORIZED)
+        raise HTTPException(detail=f"User with email {email} not found", status_code=status.HTTP_404_NOT_FOUND)
     otp = generate_otp()
     user.otp = otp
     db.commit()
@@ -121,7 +122,7 @@ async def login_with_email_otp(email: EmailStr, db: Session = Depends(get_db)):
 async def validate_email_otp(email: EmailStr, otp: int, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == email).first()
     if not user:
-        raise HTTPException(detail=f"User with email {email} not found", status_code=status.HTTP_401_UNAUTHORIZED)
+        raise HTTPException(detail=f"User with email {email} not found", status_code=status.HTTP_404_NOT_FOUND)
     if user.otp == otp:
         user.otp = None
         db.commit()
