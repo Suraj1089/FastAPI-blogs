@@ -4,7 +4,7 @@ from sqladmin import Admin, ModelView
 
 from api.v1.endpoints import converter, user, blog
 from db.database import Base, engine
-from db.models.blog import Post, Comment
+from db.models.blog import Post, Comment, Like
 from db.models.user import User, Author
 
 
@@ -36,10 +36,15 @@ class AuthorAdmin(ModelView, model=Author):
     column_list = [Author.id, User.id]
 
 
+class LikeAdmin(ModelView, model=Like):
+    column_list = [Like.id, Like.like_count]
+
+
 admin.add_view(UserAdmin)
 admin.add_view(PostAdmin)
 admin.add_view(AuthorAdmin)
 admin.add_view(CommentAdmin)
+admin.add_view(LikeAdmin)
 
 app.include_router(user.router)
 app.include_router(blog.router)
