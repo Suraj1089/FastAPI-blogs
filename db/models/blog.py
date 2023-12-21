@@ -52,3 +52,4 @@ class Comment(Base):
 class Like(Base):
     __tablename__ = "like"
     id = Column(Integer, primary_key=True)
+    like_count = Column(Integer, default=0, nullable=True)
